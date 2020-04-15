@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+var Course = require("./courses");
 var userSchema = new Schema({
     //permissions would either be student or prof. Used for determining which front end to load
     id: {
@@ -33,11 +33,12 @@ var userSchema = new Schema({
     },
 
     //list of students associated with that user. Should be null if user is a student
-    StudentList: [{type: Schema.ObjectId, ref: 'Student'}],
+    StudentList: [{type: Schema.ObjectId, ref: 'User'}],
     RegisteredCourses: [{type: Schema.ObjectId, ref: 'Course'}]
 
     
 });
 
 var Users = mongoose.model('User', userSchema);
+
 module.exports = Users;

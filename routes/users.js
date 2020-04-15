@@ -50,5 +50,42 @@ usersRouter
       res.json(resp);
     });
   });
+usersRouter
+.route("/:userId/courses")
+.get((req, res, next) => {
+  users.findById(req.params.userId, (err, user) => {
+    if (err) throw err;
+   
+    res.json(user.RegisteredCourses);
+  });
+})
+.post( (req, res, next)=>{
+  users.findById(req.params.userId,  (err, user)=>{
+      if (err) throw err;
+      user.RegisteredCourses.push(req.body); //push to the RegisteredCourses collection
+      user.save( (err, user)=>{
+          if (err) throw err;
+          console.log('Updated Registered Courses!');
+          res.json(user);
+      });
+  });
+})
+.put( (req, res, next)=>{
+//add another course to the list
+  users.findById(req.params.userId,  (err, user)=>{
+      if (err) throw err;
+      
+      user.RegisteredCourses.push(req.body); //add new comment instead
+      user.save( (err, user)=>{
+          if (err) throw err;
+          console.log('Updated Registered Courses!');
+          res.json(user);
+      });
+  });
+})
+
+
+
+
 
 module.exports = usersRouter;
