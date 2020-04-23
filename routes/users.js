@@ -1,8 +1,9 @@
 var express = require("express");
 var usersRouter = express.Router();
+
 const mongoose = require("mongoose");
 let users = require("../models/users");
-
+let courses = require("../models/courses");
 /* GET home page. */
 usersRouter
   .route("/")
@@ -62,7 +63,12 @@ usersRouter
 .post( (req, res, next)=>{
   users.findById(req.params.userId,  (err, user)=>{
       if (err) throw err;
-      user.RegisteredCourses.push(req.body); //push to the RegisteredCourses collection
+      var course = mongoose.model("Course");
+      course.courseName = req.body.courseName;
+      course.courseId = req.body.courseId;
+      course.semesterOffered = req.body.semesterOffered;
+      
+      user.RegisteredCourses.push(course); //push to the RegisteredCourses collection
       user.save( (err, user)=>{
           if (err) throw err;
           console.log('Updated Registered Courses!');
@@ -74,8 +80,13 @@ usersRouter
 //add another course to the list
   users.findById(req.params.userId,  (err, user)=>{
       if (err) throw err;
-      
-      user.RegisteredCourses.push(req.body); //add new comment instead
+    
+      var course = mongoose.model("Course");
+      course.courseName = req.body.courseName;
+      course.courseId = req.body.courseId;
+      course.semesterOffered = req.body.semesterOffered;
+
+      user.RegisteredCourses.push(course); //add new comment instead
       user.save( (err, user)=>{
           if (err) throw err;
           console.log('Updated Registered Courses!');
